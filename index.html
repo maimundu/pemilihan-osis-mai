@@ -324,11 +324,11 @@
             pilihanTerpilih = "";
         };
 
-        // Kirim suara ke Google Sheets
+        // ✅ Kirim Suara → Kembali ke Halaman Pemilihan
         document.getElementById('btnKonfirmasi').onclick = async () => {
             document.getElementById('confirmModal').classList.add('hidden');
             try {
-                const kirim = await fetch(URL_APPSCRIPT, {
+                await fetch(URL_APPSCRIPT, {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
@@ -341,7 +341,16 @@
                 tandaiSudahPilih();
                 document.getElementById('chosenCandidate').textContent = pilihanTerpilih;
                 await muatHasil();
+
+                // ✅ Tampilkan pesan lalu kembali ke halaman pemilihan
                 alert('✅ Suara berhasil dikirim! Terima kasih telah berpartisipasi.');
+                
+                // Hapus penanda perangkat agar siswa berikutnya bisa memilih
+                localStorage.removeItem(ID_PEMILIH_KEY);
+                
+                // Kembali ke halaman pemilihan/login
+                window.location.href = "https://maimundu.github.io/pemilihan-osis-mai/pemilihan.html";
+
             } catch (e) {
                 alert('❌ Gagal mengirim suara: ' + e.message);
             }
