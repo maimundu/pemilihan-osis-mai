@@ -103,215 +103,13 @@
             border: 1px solid #ef9a9a;
             color: #c62828;
         }
-
-        .badge-paket {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-weight: bold;
-            color: white;
-            background-color: #1565c0;
-        }
-
-        #examArea { display: none; }
-
-        .exam-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #eee;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .user-info p {
-            font-size: 0.95rem;
-            color: #444;
-            margin-bottom: 4px;
-        }
-
-        .timer-box {
-            background-color: #e74c3c;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        .number-nav-container {
-            margin-bottom: 20px;
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #e9ecef;
-        }
-
-        .number-nav-title {
-            font-size: 0.85rem;
-            font-weight: bold;
-            color: #6c757d;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .number-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
-            gap: 8px;
-        }
-
-        .btn-number {
-            padding: 8px 0;
-            background-color: #e9ecef;
-            color: #495057;
-            border: 1px solid #ced4da;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 0.9rem;
-        }
-
-        .btn-number:hover { background-color: #dee2e6; }
-        .btn-number.active {
-            background-color: #2a5298;
-            color: white;
-            border-color: #1e3c72;
-            box-shadow: 0 0 0 2px rgba(42, 82, 152, 0.3);
-        }
-        .btn-number.answered {
-            background-color: #27ae60;
-            color: white;
-            border-color: #219653;
-        }
-        .btn-number.active.answered {
-            background-color: #1e7e34;
-            border-color: #114b1f;
-            box-shadow: 0 0 0 2px rgba(39, 174, 96, 0.4);
-        }
-
-        .soal-card {
-            background: #fff;
-            padding: 10px 5px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
-        .soal-item { display: none; }
-        .soal-item.active { display: block; }
-
-        .soal-text {
-            font-size: 1.05rem;
-            font-weight: 600;
-            color: #222;
-            margin-bottom: 15px;
-            line-height: 1.5;
-        }
-
-        .options-list { list-style: none; }
-        .option-item { margin-bottom: 10px; }
-        .option-item label {
-            display: flex;
-            align-items: center;
-            padding: 12px 16px;
-            border: 1px solid #e0e0e0;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .option-item label:hover {
-            background-color: #f5f5f5;
-            border-color: #2a5298;
-        }
-        .option-item input[type="radio"] {
-            margin-right: 12px;
-            accent-color: #2a5298;
-            transform: scale(1.1);
-        }
-
-        .exam-navigation {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid #eee;
-        }
-
-        .btn-nav {
-            padding: 10px 20px;
-            background-color: #6c757d;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .btn-nav:hover { background-color: #5a6268; }
-        .btn-nav:disabled {
-            background-color: #e0e0e0;
-            color: #a0a0a0;
-            cursor: not-allowed;
-        }
-
-        #scoreResult {
-            display: none;
-            text-align: center;
-            padding: 25px;
-        }
-
-        .identitas-hasil {
-            background: #f0f4f9;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            text-align: left;
-            border-left: 4px solid #2a5298;
-        }
-        .identitas-hasil p {
-            margin-bottom: 5px;
-            font-size: 1rem;
-            color: #333;
-        }
-        .identitas-hasil strong { color: #1e3c72; }
-
-        .score-circle {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: #1e3c72;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 2.2rem;
-            font-weight: bold;
-            margin: 20px auto;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-        }
-
-        .score-details {
-            font-size: 1.05rem;
-            color: #444;
-            margin-bottom: 20px;
-            line-height: 1.8;
-        }
     </style>
 </head>
 <body>
 
     <div class="container">
         <div id="loginCard" class="card login-card">
-            <h2>Portal Login Ujian</h2>
+            <h2>Portal Login Pemilihan OSIS</h2>
             <form id="loginForm">
                 <div class="form-group">
                     <label for="kelas">Pilih Kelas:</label>
@@ -330,16 +128,15 @@
                         <option value="" disabled selected>-- Pilih Kelas Terlebih Dahulu --</option>
                     </select>
                 </div>
-                <button type="submit" class="btn-submit"><a href="https://maimundu.github.io/pemilihan-osis-mai/index.html">Masuk Ujian</a></button>
+                <button type="submit" class="btn-submit">Masuk</button>
             </form>
             <div id="resultBox" class="result-box"></div>
         </div>
-
-        
     </div>
 
     <script>
-       const dataSiswa = {
+        // Data Siswa per Kelas
+        const dataSiswa = {
             "Kelas X.1": ["AGUNG LASMANA", "ALVIN WIJAYA", "AHMAD MAULANA", "ANA NI'MATUL ULAA", "ARYA SAPUTRA", "BUNGA SAFITRI", "DEA RATNA", "DIMAS ADITIA", "EDWARD FABIANO", "FAHRANI SALSABILA KURNIAWAN", "FIFIH NAILAH", "FUJIYANTI ARAFAH", "HALIMAH REGINA PUTRI", "KEYSA AGITA PUTRI", "MOH SAKU", "MUCHAROPI", "M. REZA", "REFA", "RENALDI SETIAWAN", "SAEPUL", "SUPRIYOGI", "SYIFAA KHOIRUNNISA", "UMU AIMAN", "VIDIYAH AYUNI", "WIDIA NINGSIH"],
             "Kelas X.2": ["ALENI", "AHMAD MAULUDDIN", "AKHMAD KAELANI", "ASYARA ADILLA KHANZA", "BENTAR AL HUSNA", "CHIKA RAMADHANI", "DZAKY ALMER JAMAIL", "ERIKA HAMID", "FAHAT DWI SAPUTRA", "FADHEA DWI VANNESA", "HAFIZAH NURUL AEINI", "HABIBUN NURULLAH", "KHOERUL AZAM", "KENANGA AFISTA", "MARIO FATAN DERMAWAN", "MUHAMAD DAVIN FERDIANSYAH", "MUHAMMAD ARIF AMIRUDDIN", "NUR AZIZAH", "NURHALIMAH", "PUTRI ANGGRAENI", "REZA", "RIFAT HIDAYAT", "SYAHPUTRA", "SELY RAHMADANI", "SAMIUN", "ZULFIKAR"],
             "Kelas XI": ["ABDUL HAMID", "AGUNG PRAMANA", "ANDIKA RIZKI PUTRA", "APRIYAN", "ASIYA", "DWI ANDIN JUANITA", "EFAN APRIANSYAH", "GALANG DWI PRATAMA", "HENGKI", "ILHAM NOOR FAMI", "MEGA MUSTIKA", "MOH ADILATUN", "MOH FAZRI AMRULLAH", "MOH. ARIF MAULANA", "MOH. MAULANA", "MOH. RIZAL", "MOHAMAD REVALDI", "MOHAMMAD FARID HUSEN", "MOHAMMAD SHOPIULLAH", "MUFLIKHA DWI WAHYUNI", "MUHAMAD ARSYADATUL UMAM", "MUHAMAD FADIL FADILLAH", "MUHAMMAD NUR ZAFIN", "MUHAMMAD SANDIH", "NATASYA RAMADHANTI", "NOVA ALFIANA", "RAMADAN", "RISKY MAULANA", "SEKAR KEMUNING", "SELVI", "SHERLY KHASANAH", "SITI AFNI AULIYAH", "SOLEHA WIDIA WATI", "SULAIMAN", "SYIFATURRAHMAWATI"],
@@ -347,7 +144,7 @@
             "Kelas XII.2": ["AHMAD RIYANI", "ALDIANSYAH", "ANGGA", "ARMAN", "AULIA RAHMAWATI", "DAMAR ADIYASA", "GIO RAHMADHAN", "IMAN MAULANA", "LUVI SAHRUL", "MELISA", "MOHAMMAD AFIF MAULANA", "MOHAMMAD YASIN ARAFAT", "NABILA AZZALIA PUTRI", "NATASHA SAFFA AZAHRA", "NILA LESTARI", "NUR AZIZAH", "SAFIRA DEWI", "SEMI AJI DILAGA", "SITI RAHMA YANI", "SITI SHOLEHA", "SRI HAYATI", "SUCI SEPTIANI", "SUTA", "TIARA PUTRI FEBRIYANTI"]
         };
 
-        
+        // Isi daftar nama siswa berdasarkan kelas yang dipilih
         function loadNamaSiswa() {
             const kelasSelect = document.getElementById("kelas");
             const namaSelect = document.getElementById("nama");
@@ -365,7 +162,28 @@
             }
         }
 
-        
+        // Saat form dikirim → simpan data & arahkan ke halaman tujuan
+        document.getElementById("loginForm").addEventListener("submit", function(e) {
+            e.preventDefault(); // Cegah kirim ulang halaman
+
+            const kelas = document.getElementById("kelas").value;
+            const nama = document.getElementById("nama").value;
+            const resultBox = document.getElementById("resultBox");
+
+            if (!kelas || !nama) {
+                resultBox.textContent = "⚠️ Silakan pilih kelas dan nama terlebih dahulu!";
+                resultBox.className = "result-box error";
+                resultBox.style.display = "block";
+                return;
+            }
+
+            // Simpan data siswa agar bisa dipakai di halaman tujuan
+            localStorage.setItem("namaSiswa", nama);
+            localStorage.setItem("kelasSiswa", kelas);
+
+            // Arahkan langsung ke halaman pemilihan OSIS
+            window.location.href = "https://maimundu.github.io/pemilihan-osis-mai/index.html";
+        });
     </script>
 </body>
 </html>
