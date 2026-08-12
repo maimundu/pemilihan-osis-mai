@@ -240,9 +240,13 @@
         const URL_APPSCRIPT = "https://script.google.com/macros/s/AKfycbx0IobxK-nfVRiqE4BYUJX3jjFSREFEM4lc4DyOf6AdkroiAeTzmS9BTD2PkbMxTqSClA/exec";
         // =================================================
 
-        // Buat ID unik pemilih (agar tidak bisa vote 2x)
-        const ID_PEMILIH = localStorage.getItem("idPemilih") || "pemilih_" + Math.random().toString(36).substr(2,9);
-        localStorage.setItem("idPemilih", ID_PEMILIH);
+        // ✅ ID PEMILIH TETAP SAMA DI HP YANG SAMA
+        const ID_PEMILIH_KEY = "idPemilihanOSIS_2025_TETAP";
+        let ID_PEMILIH = localStorage.getItem(ID_PEMILIH_KEY);
+        if (!ID_PEMILIH) {
+            ID_PEMILIH = "pemilih_" + Math.random().toString(36).substr(2, 12) + "_" + Date.now();
+            localStorage.setItem(ID_PEMILIH_KEY, ID_PEMILIH);
+        }
 
         let sudahMemilih = false;
         let pilihanTerpilih = "";
@@ -260,35 +264,35 @@
                 labels: ['Pasangan 01', 'Pasangan 02', 'Pasangan 03'],
                 datasets: [{
                     label: 'Perolehan Suara',
-                    data: [0,0,0],
-                    backgroundColor: ['#165DFF','#36CBCB','#FF7D00'],
+                    data: [0, 0, 0],
+                    backgroundColor: ['#165DFF', '#36CBCB', '#FF7D00'],
                     borderRadius: 8
                 }]
             },
-            options: { responsive:true, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}} }
+            options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
         });
 
-        // Ambil hasil dari Google Sheets
+        // Ambil hasil dari Google Sheets & cek status pemilih
         async function muatHasil() {
             try {
-                const res = await fetch(`${URL_APPSCRIPT}?idPemilih=${ID_PEMILIH}`);
+                const res = await fetch(`${URL_APPSCRIPT}?idPemilih=${encodeURIComponent(ID_PEMILIH)}`);
                 const data = await res.json();
-                const {p1,p2,p3,sudahPilih} = data;
-                const total = p1+p2+p3;
+                const { p1, p2, p3, sudahPilih } = data;
+                const total = p1 + p2 + p3;
 
                 document.getElementById('vote1').textContent = p1;
                 document.getElementById('vote2').textContent = p2;
                 document.getElementById('vote3').textContent = p3;
                 document.getElementById('totalVote').textContent = total;
-                document.getElementById('persen1').textContent = total?((p1/total)*100).toFixed(1):0;
-                document.getElementById('persen2').textContent = total?((p2/total)*100).toFixed(1):0;
-                document.getElementById('persen3').textContent = total?((p3/total)*100).toFixed(1):0;
-                voteChart.data.datasets[0].data = [p1,p2,p3];
+                document.getElementById('persen1').textContent = total ? ((p1 / total) * 100).toFixed(1) : 0;
+                document.getElementById('persen2').textContent = total ? ((p2 / total) * 100).toFixed(1) : 0;
+                document.getElementById('persen3').textContent = total ? ((p3 / total) * 100).toFixed(1) : 0;
+                voteChart.data.datasets[0].data = [p1, p2, p3];
                 voteChart.update();
                 document.getElementById('lastUpdate').textContent = 'Terbaru: ' + new Date().toLocaleString('id-ID');
 
-                if(sudahPilih) tandaiSudahPilih();
-            } catch(e) {
+                if (sudahPilih) tandaiSudahPilih();
+            } catch (e) {
                 console.error('Gagal memuat data:', e);
             }
         }
@@ -298,15 +302,16 @@
             document.getElementById('voteStatus').classList.add('hidden');
             document.getElementById('voteSuccess').classList.remove('hidden');
             document.querySelectorAll('.vote-btn').forEach(b => {
-                b.classList.add('opacity-50','cursor-not-allowed');
+                b.classList.add('opacity-50', 'cursor-not-allowed');
                 b.textContent = 'Sudah Memilih';
+                b.disabled = true;
             });
         }
 
         // Pilih kandidat
         document.querySelectorAll('.vote-btn').forEach(btn => {
             btn.onclick = () => {
-                if(sudahMemilih) return alert('Kamu sudah memilih!');
+                if (sudahMemilih) return alert('⚠️ Kamu sudah memilih dari perangkat ini! Tidak bisa memilih lagi.');
                 pilihanTerpilih = btn.dataset.candidate;
                 document.getElementById('candidateName').textContent = pilihanTerpilih;
                 document.getElementById('confirmModal').classList.remove('hidden');
@@ -323,23 +328,27 @@
         document.getElementById('btnKonfirmasi').onclick = async () => {
             document.getElementById('confirmModal').classList.add('hidden');
             try {
-                await fetch(URL_APPSCRIPT, {
+                const kirim = await fetch(URL_APPSCRIPT, {
                     method: 'POST',
                     mode: 'no-cors',
-                    headers: {'Content-Type':'application/json'},
-                    body: JSON.stringify({kandidat:pilihanTerpilih, idPemilih:ID_PEMILIH})
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        kandidat: pilihanTerpilih,
+                        idPemilih: ID_PEMILIH
+                    })
                 });
+
                 tandaiSudahPilih();
                 document.getElementById('chosenCandidate').textContent = pilihanTerpilih;
                 await muatHasil();
-                alert('✅ Suara berhasil dikirim! Terima kasih.');
-            } catch(e) {
+                alert('✅ Suara berhasil dikirim! Terima kasih telah berpartisipasi.');
+            } catch (e) {
                 alert('❌ Gagal mengirim suara: ' + e.message);
             }
         };
 
         window.onclick = e => {
-            if(e.target === document.getElementById('confirmModal'))
+            if (e.target === document.getElementById('confirmModal'))
                 document.getElementById('confirmModal').classList.add('hidden');
         };
 
