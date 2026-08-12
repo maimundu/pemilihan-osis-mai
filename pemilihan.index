@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pemilihan OSIS — Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#36CBCB',
+                        accent: '#FF7D00',
+                        dark: '#1E293B'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-bg { background: linear-gradient(135deg, #165DFF 0%, #36CBCB 100%); }
+        .card-shadow { box-shadow: 0 10px 30px rgba(22,93,255,0.15); }
+        .candidate-card:hover { transform: translateY(-5px); transition: 0.3s; }
+        .page { display: none; }
+        .page.active { display: block; }
+    </style>
+</head>
+<body class="bg-slate-50 text-dark min-h-screen">
+
+    <!-- ============= HALAMAN LOGIN ============= -->
+    <div id="halamanLogin" class="page active">
+        <div class="min-h-screen flex items-center justify-center px-4 gradient-bg">
+            <div class="bg-white rounded-2xl p-8 w-full max-w-md card-shadow">
+                <div class="text-center mb-8">
+                    <i class="fa fa-university text-4xl text-primary mb-2"></i>
+                    <h2 class="text-2xl font-bold text-primary">Pemilihan OSIS</h2>
+                    <p class="text-slate-500">Tahun Ajaran 2025/2026</p>
+                </div>
+                <form id="formLogin">
+                    <div class="mb-4">
+                        <label class="block font-medium mb-1">Nomor Induk Siswa (NIS)</label>
+                        <input type="text" id="nis" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="Masukkan NIS" required>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block font-medium mb-1">Kata Sandi</label>
+                        <input type="password" id="sandi" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="Masukkan kata sandi" required>
+                    </div>
+                    <div id="pesanError" class="text-red-500 text-sm mb-4 hidden"></div>
+                    <button type="submit" class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-primary/90 transition">
+                        <i class="fa fa-sign-in mr-2"></i> Masuk
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============= HALAMAN UTAMA (SETELAH LOGIN) ============= -->
+    <div id="halamanUtama" class="page">
+
+        <!-- Navbar -->
+        <nav class="gradient-bg text-white shadow-lg sticky top-0 z-50">
+            <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <i class="fa fa-university text-2xl"></i>
+                    <h1 class="text-xl font-bold">Pemilihan OSIS</h1>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span id="infoPengguna" class="hidden md:inline"></span>
+                    <button id="btnKeluar" class="bg-white/20 px-3 py-1 rounded-lg text-sm hover:bg-white/30">
+                        <i class="fa fa-sign-out"></i> Keluar
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Selamat Datang -->
+        <section class="py-8 gradient-bg text-white">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-2xl font-bold mb-2">Selamat Datang, <span id="namaSiswa"></span>!</h2>
+                <p>Silakan pilih kandidat pilihanmu dengan bijak.</p>
+            </div>
+        </section>
+
+        <!-- Kandidat -->
+        <section class="py-12">
+            <div class="container mx-auto px-4">
+                <h2 class="text-2xl font-bold text-center text-primary mb-8">Daftar Pasangan Calon</h2>
+                <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                    
+                    <!-- Kandidat 1 -->
+                    <div class="bg-white rounded-2xl p-6 card-shadow candidate-card border-t-4 border-primary">
+                        <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center text-primary text-2xl font-bold">01</div>
+                        <h3 class="text-xl font-bold text-center mb-1">Ahmad & Siti</h3>
+                        <p class="text-center text-slate-500 text-sm mb-4">Ketua: Ahmad Rizki | Wakil: Siti Aminah</p>
+                        <h4 class="font-semibold text-primary text-sm">Visi:</h4>
+                        <p class="text-sm text-slate-600 mb-3">"Mewujudkan sekolah yang disiplin, kreatif, dan berprestasi berlandaskan iman dan takwa."</p>
+                        <h4 class="font-semibold text-primary text-sm">Misi:</h4>
+                        <ul class="text-sm text-slate-600 list-disc pl-5 mb-4">
+                            <li>Meningkatkan kedisiplinan seluruh warga sekolah</li>
+                            <li>Mengembangkan bakat dan minat siswa</li>
+                            <li>Mempererat tali persaudaraan antar siswa</li>
+                        </ul>
+                        <button class="w-full bg-primary text-white py-2 rounded-lg hover:bg-primary/90 pilih-btn" data-calon="Pasangan 01">Pilih Kandidat Ini</button>
+                    </div>
+
+                    <!-- Kandidat 2 -->
+                    <div class="bg-white rounded-2xl p-6 card-shadow candidate-card border-t-4 border-secondary">
+                        <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-secondary/10 flex items-center justify-center text-secondary text-2xl font-bold">02</div>
+                        <h3 class="text-xl font-bold text-center mb-1">Budi & Dewi</h3>
+                        <p class="text-center text-slate-500 text-sm mb-4">Ketua: Budi Santoso | Wakil: Dewi Lestari</p>
+                        <h4 class="font-semibold text-secondary text-sm">Visi:</h4>
+                        <p class="text-sm text-slate-600 mb-3">"Membangun sekolah yang maju, berbudaya, dan penuh rasa kekeluargaan."</p>
+                        <h4 class="font-semibold text-secondary text-sm">Misi:</h4>
+                        <ul class="text-sm text-slate-600 list-disc pl-5 mb-4">
+                            <li>Meningkatkan kualitas kegiatan ekstrakurikuler</li>
+                            <li>Menciptakan lingkungan sekolah yang bersih dan nyaman</li>
+                            <li>Membangun rasa percaya diri dan kreativitas siswa</li>
+                        </ul>
+                        <button class="w-full bg-secondary text-white py-2 rounded-lg hover:bg-secondary/90 pilih-btn" data-calon="Pasangan 02">Pilih Kandidat Ini</button>
+                    </div>
+
+                    <!-- Kandidat 3 -->
+                    <div class="bg-white rounded-2xl p-6 card-shadow candidate-card border-t-4 border-accent">
+                        <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-accent/10 flex items-center justify-center text-accent text-2xl font-bold">03</div>
+                        <h3 class="text-xl font-bold text-center mb-1">Candra & Eka</h3>
+                        <p class="text-center text-slate-500 text-sm mb-4">Ketua: Candra Wijaya | Wakil: Eka Putri</p>
+                        <h4 class="font-semibold text-accent text-sm">Visi:</h4>
+                        <p class="text-sm text-slate-600 mb-3">"Menjadikan OSIS yang inovatif, aktif, dan melayani dengan sepenuh hati."</p>
+                        <h4 class="font-semibold text-accent text-sm">Misi:</h4>
+                        <ul class="text-sm text-slate-600 list-disc pl-5 mb-4">
+                            <li>Meningkatkan pelayanan dan aspirasi siswa</li>
+                            <li>Mengadakan kegiatan yang bermanfaat dan edukatif</li>
+                            <li>Menjalin kerjasama yang baik antar seluruh komponen sekolah</li>
+                        </ul>
+                        <button class="w-full bg-accent text-white py-2 rounded-lg hover:bg-accent/90 pilih-btn" data-calon="Pasangan 03">Pilih Kandidat Ini</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hasil Suara -->
+        <section class="py-12 bg-slate-50">
+            <div class="container mx-auto px-4">
+                <h2 class="text-2xl font-bold text-center text-primary mb-6">Hasil Perolehan Suara</h2>
+                <p class="text-center text-slate-500 mb-8">Terakhir diperbarui: <span id="pembaruan">-</span></p>
+                <div class="max-w-3xl mx-auto bg-white p-6 rounded-2xl card-shadow">
+                    <canvas id="grafikSuara" height="250"></canvas>
+                    <div class="mt-6 space-y-3">
+                        <div class="flex justify-between p-3 bg-blue-50 rounded-lg">
+                            <span>01 — Ahmad & Siti</span>
+                            <span class="font-bold text-primary"><span id="jml1">0</span> suara (<span id="persen1">0</span>%)</span>
+                        </div>
+                        <div class="flex justify-between p-3 bg-teal-50 rounded-lg">
+                            <span>02 — Budi & Dewi</span>
+                            <span class="font-bold text-secondary"><span id="jml2">0</span> suara (<span id="persen2">0</span>%)</span>
+                        </div>
+                        <div class="flex justify-between p-3 bg-orange-50 rounded-lg">
+                            <span>03 — Candra & Eka</span>
+                            <span class="font-bold text-accent"><span id="jml3">0</span> suara (<span id="persen3">0</span>%)</span>
+                        </div>
+                        <div class="flex justify-between p-3 bg-slate-100 rounded-lg font-bold">
+                            <span>Total Suara</span>
+                            <span id="total">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="gradient-bg text-white py-4 text-center text-sm">
+            <p>© 2026 Sekolah Kita | Pemilihan OSIS 2025/2026</p>
+        </footer>
+    </div>
+
+    <!-- Modal Konfirmasi -->
+    <div id="modalKonfirmasi" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white p-8 rounded-2xl max-w-md w-full mx-4">
+            <h3 class="text-xl font-bold mb-4 text-center">Konfirmasi Pilihan</h3>
+            <p class="text-center mb-4">Anda memilih: <span id="namaCalon" class="font-bold text-primary"></span></p>
+            <p class="text-center text-red-500 text-sm mb-6">⚠️ Setelah dikirim, suara TIDAK DAPAT diubah!</p>
+            <div class="flex gap-3">
+                <button id="btnBatal" class="flex-1 py-2 border border-slate-300 rounded-lg hover:bg-slate-100">Batal</button>
+                <button id="btnKirim" class="flex-1 py-2 bg-primary text-white rounded-lg hover:bg-primary/90">Kirim Suara</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== GANTI URL INI DENGAN URL APPSCRIPT-MU =====
+        const URL_APPSCRIPT = "https://script.google.com/macros/s/AKfycbx0IobxK-nfVRiqE4BYUJX3jjFSREFEM4lc4DyOf6AdkroiAeTzmS9BTD2PkbMxTqSClA/exec";
+        // =================================================
+
+        let nisPengguna = "";
+        let calonTerpilih = "";
+        let sudahPilih = false;
+        let grafik = null;
+
+        // Tampilkan halaman
+        function tampilHalaman(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        // Inisialisasi grafik
+        function buatGrafik() {
+            const ctx = document.getElementById('grafikSuara').getContext('2d');
+            grafik = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Pasangan 01', 'Pasangan 02', 'Pasangan 03'],
+                    datasets: [{
+                        label: 'Suara',
+                        data: [0,0,0],
+                        backgroundColor: ['#165DFF','#36CBCB','#FF7D00'],
+                        borderRadius: 8
+                    }]
+                },
+                options: { responsive:true, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}} }
+            });
+        }
+
+        // Muat hasil suara
+        async function muatHasil() {
+            try {
+                const res = await fetch(URL_APPSCRIPT);
+                const h = await res.json();
+                const total = h.p1 + h.p2 + h.p3;
+
+                document.getElementById('jml1').textContent = h.p1;
+                document.getElementById('jml2').textContent = h.p2;
+                document.getElementById('jml3').textContent = h.p3;
+                document.getElementById('total').textContent = total;
+                document.getElementById('persen1').textContent = total ? ((h.p1/total)*100).toFixed(1) : 0;
+                document.getElementById('persen2').textContent = total ? ((h.p2/total)*100).toFixed(1) : 0;
+                document.getElementById('persen3').textContent = total ? ((h.p3/total)*100).toFixed(1) : 0;
+                document.getElementById('pembaruan').textContent = new Date().toLocaleString('id-ID');
+
+                if(grafik) {
+                    grafik.data.datasets[0].data = [h.p1, h.p2, h.p3];
+                    grafik.update();
+                }
+            } catch(e) { console.error(e); }
+        }
+
+        // Tandai sudah memilih
+        function kunciPilihan() {
+            sudahPilih = true;
+            document.querySelectorAll('.pilih-btn').forEach(b => {
+                b.classList.add('opacity-50', 'cursor-not-allowed');
+                b.textContent = '✅ Sudah Memilih';
+                b.disabled = true;
+            });
+        }
+
+        // Login
+        document.getElementById('formLogin').addEventListener('submit', async e => {
+            e.preventDefault();
+            const nis = document.getElementById('nis').value.trim();
+            const sandi = document.getElementById('sandi').value.trim();
+            const pesan = document.getElementById('pesanError');
+
+            try {
+                const res = await fetch(URL_APPSCRIPT, {
+                    method: 'POST',
+                    headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify({aksi:"login", nis, sandi})
+                });
+                const hasil = await res.json();
+
+                if(hasil.status === "sudah") {
+                    pesan.textContent = "✅ Login berhasil! Namun Anda SUDAH memberikan suara.";
+                    pesan.classList.remove('hidden','text-red-500');
+                    pesan.classList.add('text-green-600');
+                    nisPengguna = nis;
+                    setTimeout(() => {
+                        tampilHalaman('halamanUtama');
+                        document.getElementById('namaSiswa').textContent = hasil.nama;
+                        document.getElementById('infoPengguna').textContent = hasil.nama + " — " + hasil.kelas;
+                        kunciPilihan();
+                        muatHasil();
+                    }, 1200);
+                }
+                else if(hasil.status === "sukses") {
+                    pesan.textContent = "✅ Selamat datang, " + hasil.nama;
+                    pesan.classList.remove('hidden','text-red-500');
+                    pesan.classList.add('text-green-600');
+                    nisPengguna = nis;
+                    setTimeout(() => {
+                        tampilHalaman('halamanUtama');
+                        document.getElementById('namaSiswa').textContent = hasil.nama;
+                        document.getElementById('infoPengguna').textContent = hasil.nama + " — " + hasil.kelas;
+                        buatGrafik();
+                        muatHasil();
+                    }, 1000);
+                }
+                else {
+                    pesan.textContent = "❌ NIS atau Kata Sandi salah!";
+                    pesan.classList.remove('hidden','text-green-600');
+                    pesan.classList.add('text-red-500');
+                }
+            } catch(err) {
+                pesan.textContent = "❌ Kesalahan koneksi: " + err.message;
+                pesan.classList.remove('hidden','text-green-600');
+                pesan.classList.add('text-red-500');
+            }
+        });
+
+        // Pilih kandidat
+        document.querySelectorAll('.pilih-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if(sudahPilih) return alert("Anda sudah memberikan suara!");
+                calonTerpilih = btn.dataset.calon;
+                document.getElementById('namaCalon').textContent = calonTerpilih;
+                document.getElementById('modalKonfirmasi').classList.remove('hidden');
+            });
+        });
+
+        // Batal
+        document.getElementById('btnBatal').onclick = () => {
+            document.getElementById('modalKonfirmasi').classList.add('hidden');
+            calonTerpilih = "";
+        };
+
+        // Kirim suara
+        document.getElementById('btnKirim').onclick = async () => {
+            document.getElementById('modalKonfirmasi').classList.add('hidden');
+            try {
+                await fetch(URL_APPSCRIPT, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify({aksi:"kirimSuara", nis:nisPengguna, kandidat:calonTerpilih})
+                });
+                alert("✅ Suara berhasil dikirim! Terima kasih partisipasinya.");
+                kunciPilihan();
+                muatHasil();
+            } catch(e) {
+                alert("❌ Gagal mengirim suara: " + e.message);
+            }
+        };
+
+        // Keluar
+        document.getElementById('btnKeluar').onclick = () => {
+            nisPengguna = "";
+            sudahPilih = false;
+            calonTerpilih = "";
+            document.getElementById('nis').value = "";
+            document.getElementById('sandi').value = "";
+            document.getElementById('pesanError').classList.add('hidden');
+            document.querySelectorAll('.pilih-btn').forEach(b => {
+                b.classList.remove('opacity-50','cursor-not-allowed');
+                b.textContent = 'Pilih Kandidat Ini';
+                b.disabled = false;
+            });
+            tampilHalaman('halamanLogin');
+        };
+
+        setInterval(muatHasil, 15000);
+    </script>
+</body>
+</html>
