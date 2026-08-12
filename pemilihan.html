@@ -332,7 +332,6 @@
             try {
                 await fetch(URL_APPSCRIPT, {
                     method: 'POST',
-                    mode: 'no-cors',
                     headers: {'Content-Type':'application/json'},
                     body: JSON.stringify({aksi:"kirimSuara", nis:nisPengguna, kandidat:calonTerpilih})
                 });
