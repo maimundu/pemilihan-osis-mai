@@ -3,136 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Login & Ujian Online</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    <title>Pemilihan Ketua & Wakil OSIS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#36CBCB',
+                        accent: '#FF7D00',
+                        dark: '#1E293B',
+                        light: '#F8FAFC'
+                    },
+                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] }
+                }
+            }
         }
-
-        body {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 850px;
-        }
-
-        .card {
-            background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            padding: 30px;
-            margin: 0 auto;
-        }
-
-        .login-card {
-            max-width: 450px;
-        }
-
-        .card h2 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 24px;
-            font-size: 1.5rem;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #555;
-            font-weight: 600;
-        }
-
-        .form-group select,
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-
-        .form-group select:focus,
-        .form-group input:focus {
-            outline: none;
-            border-color: #2a5298;
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 12px;
-            background-color: #2a5298;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .btn-submit:hover {
-            background-color: #1e3c72;
-        }
-
-        .result-box {
-            display: none;
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 6px;
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        .result-box.error {
-            background-color: #ffebee;
-            border: 1px solid #ef9a9a;
-            color: #c62828;
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .card-shadow { box-shadow: 0 10px 30px rgba(22, 93, 255, 0.12); }
+            .candidate-card:hover { transform: translateY(-8px); transition: all 0.3s ease; }
+            .gradient-bg { background: linear-gradient(135deg, #165DFF 0%, #36CBCB 100%); }
         }
     </style>
 </head>
-<body>
+<body class="font-sans bg-slate-50 text-dark">
 
-    <div class="container">
-        <div id="loginCard" class="card login-card">
-            <h2>Portal Login Pemilihan OSIS</h2>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label for="kelas">Pilih Kelas:</label>
-                    <select id="kelas" required onchange="loadNamaSiswa()">
-                        <option value="" disabled selected>-- Pilih Kelas --</option>
-                        <option value="Kelas X.1">Kelas X.1</option>
-                        <option value="Kelas X.2">Kelas X.2</option>
-                        <option value="Kelas XI">Kelas XI</option>
-                        <option value="Kelas XII.1">Kelas XII.1</option>
-                        <option value="Kelas XII.2">Kelas XII.2</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="nama">Pilih Nama Siswa:</label>
-                    <select id="nama" required disabled>
-                        <option value="" disabled selected>-- Pilih Kelas Terlebih Dahulu --</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn-submit">Masuk</button>
-            </form>
-            <div id="resultBox" class="result-box"></div>
+    <!-- Navbar -->
+    <nav class="gradient-bg text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <i class="fa fa-university text-2xl"></i>
+                <h1 class="text-xl font-bold">Pemilihan OSIS</h1>
+            </div>
         </div>
-    </div>
+    </nav>
+
+    <!-- Bagian Login -->
+    <section class="py-16 md:py-24 gradient-bg text-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-md mx-auto bg-white rounded-2xl p-8 card-shadow">
+                <h2 class="text-2xl font-bold text-center text-primary mb-6">Masuk Pemilihan</h2>
+                <form id="loginForm">
+                    <div class="mb-4">
+                        <label class="block font-medium text-slate-700 mb-2">Pilih Kelas</label>
+                        <select id="kelas" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50" required onchange="loadNamaSiswa()">
+                            <option value="" disabled selected>-- Pilih Kelas --</option>
+                            <option value="Kelas X.1">Kelas X.1</option>
+                            <option value="Kelas X.2">Kelas X.2</option>
+                            <option value="Kelas XI">Kelas XI</option>
+                            <option value="Kelas XII.1">Kelas XII.1</option>
+                            <option value="Kelas XII.2">Kelas XII.2</option>
+                        </select>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block font-medium text-slate-700 mb-2">Pilih Nama Siswa</label>
+                        <select id="nama" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50" required disabled>
+                            <option value="" disabled selected>-- Pilih Kelas Terlebih Dahulu --</option>
+                        </select>
+                    </div>
+                    <div id="pesanError" class="text-red-500 text-sm mb-4 hidden"></div>
+                    <button type="submit" class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-primary/90 transition">
+                        Masuk ke Pemilihan
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="gradient-bg text-white py-4 text-center text-sm">
+        <p>© 2026 Sekolah Kita | Pemilihan OSIS Tahun Ajaran 2025/2026</p>
+    </footer>
 
     <script>
         // Data Siswa per Kelas
@@ -164,16 +109,16 @@
 
         // Saat form dikirim → simpan data & arahkan ke halaman tujuan
         document.getElementById("loginForm").addEventListener("submit", function(e) {
-            e.preventDefault(); // Cegah kirim ulang halaman
+            e.preventDefault();
 
             const kelas = document.getElementById("kelas").value;
             const nama = document.getElementById("nama").value;
-            const resultBox = document.getElementById("resultBox");
+            const pesan = document.getElementById("pesanError");
 
             if (!kelas || !nama) {
-                resultBox.textContent = "⚠️ Silakan pilih kelas dan nama terlebih dahulu!";
-                resultBox.className = "result-box error";
-                resultBox.style.display = "block";
+                pesan.textContent = "⚠️ Silakan pilih kelas dan nama terlebih dahulu!";
+                pesan.classList.remove("hidden", "text-green-600");
+                pesan.classList.add("text-red-500");
                 return;
             }
 
