@@ -6,7 +6,6 @@
     <title>Pemilihan Ketua & Wakil OSIS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -26,7 +25,6 @@
     <style type="text/tailwindcss">
         @layer utilities {
             .card-shadow { box-shadow: 0 10px 30px rgba(22, 93, 255, 0.12); }
-            .candidate-card:hover { transform: translateY(-8px); transition: all 0.3s ease; }
             .gradient-bg { background: linear-gradient(135deg, #165DFF 0%, #36CBCB 100%); }
         }
     </style>
@@ -40,330 +38,99 @@
                 <i class="fa fa-university text-2xl"></i>
                 <h1 class="text-xl font-bold">Pemilihan OSIS</h1>
             </div>
-            <div class="hidden md:flex gap-8 font-medium">
-                <a href="#beranda" class="hover:text-yellow-300 transition">Beranda</a>
-                <a href="#kandidat" class="hover:text-yellow-300 transition">Kandidat</a>
-                <a href="#panduan" class="hover:text-yellow-300 transition">Panduan</a>
-                <a href="#suara" class="hover:text-yellow-300 transition">Suara</a>
-                <a href="#hasil" class="hover:text-yellow-300 transition">Hasil</a>
-            </div>
-            <button class="md:hidden text-2xl" id="menuToggle">
-                <i class="fa fa-bars"></i>
-            </button>
-        </div>
-        <div class="md:hidden hidden bg-primary/95 absolute w-full" id="mobileMenu">
-            <div class="container mx-auto px-4 py-2 flex flex-col gap-3 pb-4">
-                <a href="#beranda" class="py-2 hover:text-yellow-300">Beranda</a>
-                <a href="#kandidat" class="py-2 hover:text-yellow-300">Kandidat</a>
-                <a href="#panduan" class="py-2 hover:text-yellow-300">Panduan</a>
-                <a href="#suara" class="py-2 hover:text-yellow-300">Suara</a>
-                <a href="#hasil" class="py-2 hover:text-yellow-300">Hasil</a>
-            </div>
+            <a href="hasil.html" class="bg-white/20 px-3 py-1 rounded-lg text-sm hover:bg-white/30">
+                <i class="fa fa-bar-chart"></i> Lihat Hasil
+            </a>
         </div>
     </nav>
 
-    <!-- Beranda -->
-    <section id="beranda" class="py-16 md:py-24 gradient-bg text-white">
+    <!-- Bagian Login -->
+    <section class="py-16 md:py-24 gradient-bg text-white">
         <div class="container mx-auto px-4">
-            <div class="max-w-3xl mx-auto text-center">
-                <h2 class="text-[clamp(1.8rem,4vw,3rem)] font-bold mb-4">Pemilihan Ketua & Wakil OSIS</h2>
-                <p class="text-[clamp(1rem,2vw,1.25rem)] mb-8 opacity-95">Tahun Ajaran 2025/2026 — Pilih Pemimpin Sekolahmu!</p>
-                <div class="bg-white/20 backdrop-blur-sm p-6 rounded-2xl mb-8">
-                    <p class="text-lg">Suaramu tersimpan aman! Pilih dengan bijak, setiap suara tercatat secara transparan.</p>
-                </div>
-                <a href="#kandidat" class="inline-block bg-white text-primary font-semibold px-8 py-3 rounded-full shadow-lg hover:bg-yellow-300 hover:text-dark transition-all">Lihat Kandidat</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Kandidat -->
-    <section id="kandidat" class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-[clamp(1.5rem,3vw,2.2rem)] font-bold text-primary mb-3">Daftar Kandidat</h2>
-                <p class="text-slate-600 max-w-2xl mx-auto">Kenali visi, misi, dan program kerja setiap pasangan calon.</p>
-            </div>
-            <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                <!-- Kandidat 1 -->
-                <div class="bg-slate-50 rounded-2xl p-6 card-shadow candidate-card transition-all duration-300 border-t-4 border-primary">
-                    <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center text-primary text-3xl font-bold">01</div>
-                    <h3 class="text-xl font-bold text-center mb-2">Ahmad & Siti</h3>
-                    <p class="text-center text-slate-500 mb-4">Ketua: Ahmad Rizki | Wakil: Siti Aminah</p>
-                    <div class="space-y-3 mb-5">
-                        <h4 class="font-semibold text-primary">Visi:</h4>
-                        <p class="text-sm text-slate-700">"Mewujudkan sekolah yang disiplin, kreatif, dan berprestasi berlandaskan iman dan takwa."</p>
-                        <h4 class="font-semibold text-primary">Misi:</h4>
-                        <ul class="text-sm text-slate-700 list-disc pl-5 space-y-1">
-                            <li>Meningkatkan kedisiplinan seluruh warga sekolah</li>
-                            <li>Mengembangkan bakat dan minat siswa</li>
-                            <li>Mempererat tali persaudaraan antar siswa</li>
-                        </ul>
+            <div class="max-w-md mx-auto bg-white rounded-2xl p-8 card-shadow">
+                <h2 class="text-2xl font-bold text-center text-primary mb-6">Masuk Pemilihan</h2>
+                <form id="loginForm">
+                    <div class="mb-4">
+                        <label class="block font-medium text-slate-700 mb-2">Pilih Kelas</label>
+                        <select id="kelas" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50" required onchange="loadNamaSiswa()">
+                            <option value="" disabled selected>-- Pilih Kelas --</option>
+                            <option value="Kelas X.1">Kelas X.1</option>
+                            <option value="Kelas X.2">Kelas X.2</option>
+                            <option value="Kelas XI">Kelas XI</option>
+                            <option value="Kelas XII.1">Kelas XII.1</option>
+                            <option value="Kelas XII.2">Kelas XII.2</option>
+                        </select>
                     </div>
-                    <button class="w-full bg-primary text-white py-2 rounded-lg hover:bg-primary/90 transition vote-btn" data-candidate="Pasangan 01">Pilih Kandidat Ini</button>
-                </div>
-                <!-- Kandidat 2 -->
-                <div class="bg-slate-50 rounded-2xl p-6 card-shadow candidate-card transition-all duration-300 border-t-4 border-secondary">
-                    <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-secondary/10 flex items-center justify-center text-secondary text-3xl font-bold">02</div>
-                    <h3 class="text-xl font-bold text-center mb-2">Budi & Dewi</h3>
-                    <p class="text-center text-slate-500 mb-4">Ketua: Budi Santoso | Wakil: Dewi Lestari</p>
-                    <div class="space-y-3 mb-5">
-                        <h4 class="font-semibold text-secondary">Visi:</h4>
-                        <p class="text-sm text-slate-700">"Membangun sekolah yang maju, berbudaya, dan penuh rasa kekeluargaan."</p>
-                        <h4 class="font-semibold text-secondary">Misi:</h4>
-                        <ul class="text-sm text-slate-700 list-disc pl-5 space-y-1">
-                            <li>Meningkatkan kualitas kegiatan ekstrakurikuler</li>
-                            <li>Menciptakan lingkungan sekolah yang bersih dan nyaman</li>
-                            <li>Membangun rasa percaya diri dan kreativitas siswa</li>
-                        </ul>
+                    <div class="mb-6">
+                        <label class="block font-medium text-slate-700 mb-2">Pilih Nama Siswa</label>
+                        <select id="nama" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50" required disabled>
+                            <option value="" disabled selected>-- Pilih Kelas Terlebih Dahulu --</option>
+                        </select>
                     </div>
-                    <button class="w-full bg-secondary text-white py-2 rounded-lg hover:bg-secondary/90 transition vote-btn" data-candidate="Pasangan 02">Pilih Kandidat Ini</button>
-                </div>
-                <!-- Kandidat 3 -->
-                <div class="bg-slate-50 rounded-2xl p-6 card-shadow candidate-card transition-all duration-300 border-t-4 border-accent">
-                    <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-accent/10 flex items-center justify-center text-accent text-3xl font-bold">03</div>
-                    <h3 class="text-xl font-bold text-center mb-2">Candra & Eka</h3>
-                    <p class="text-center text-slate-500 mb-4">Ketua: Candra Wijaya | Wakil: Eka Putri</p>
-                    <div class="space-y-3 mb-5">
-                        <h4 class="font-semibold text-accent">Visi:</h4>
-                        <p class="text-sm text-slate-700">"Menjadikan OSIS yang inovatif, aktif, dan melayani dengan sepenuh hati."</p>
-                        <h4 class="font-semibold text-accent">Misi:</h4>
-                        <ul class="text-sm text-slate-700 list-disc pl-5 space-y-1">
-                            <li>Meningkatkan pelayanan dan aspirasi siswa</li>
-                            <li>Mengadakan kegiatan yang bermanfaat dan edukatif</li>
-                            <li>Menjalin kerjasama yang baik antar seluruh komponen sekolah</li>
-                        </ul>
-                    </div>
-                    <button class="w-full bg-accent text-white py-2 rounded-lg hover:bg-accent/90 transition vote-btn" data-candidate="Pasangan 03">Pilih Kandidat Ini</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Panduan -->
-    <section id="panduan" class="py-16 bg-slate-50">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-[clamp(1.5rem,3vw,2.2rem)] font-bold text-primary mb-3">Panduan Pemilihan</h2>
-            </div>
-            <div class="max-w-3xl mx-auto space-y-4">
-                <div class="bg-white p-5 rounded-xl shadow-sm flex gap-4">
-                    <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold">1</div>
-                    <div><h4 class="font-bold">Pahami Kandidat</h4><p class="text-slate-600">Pelajari visi & misi setiap pasangan calon.</p></div>
-                </div>
-                <div class="bg-white p-5 rounded-xl shadow-sm flex gap-4">
-                    <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold">2</div>
-                    <div><h4 class="font-bold">Pilih Kandidat</h4><p class="text-slate-600">Klik tombol pilih pada kandidat pilihanmu.</p></div>
-                </div>
-                <div class="bg-white p-5 rounded-xl shadow-sm flex gap-4">
-                    <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold">3</div>
-                    <div><h4 class="font-bold">Konfirmasi</h4><p class="text-slate-600">Suara dikirim ke Google Sheets dan tidak bisa diubah.</p></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Kotak Suara -->
-    <section id="suara" class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-[clamp(1.5rem,3vw,2.2rem)] font-bold text-primary mb-3">Kotak Suara</h2>
-            </div>
-            <div class="max-w-2xl mx-auto bg-slate-50 p-8 rounded-2xl shadow-md">
-                <div id="voteStatus" class="text-center py-6">
-                    <i class="fa fa-info-circle text-4xl text-blue-500 mb-3"></i>
-                    <h3 class="text-xl font-bold mb-2">Belum Ada Suara Diberikan</h3>
-                    <p class="text-slate-600">Silakan pilih salah satu kandidat di atas.</p>
-                </div>
-                <div id="voteSuccess" class="text-center py-6 hidden">
-                    <i class="fa fa-check-circle text-4xl text-green-500 mb-3"></i>
-                    <h3 class="text-xl font-bold mb-2 text-green-600">✅ Suara Tersimpan!</h3>
-                    <p class="text-slate-600">Suaramu untuk <span id="chosenCandidate" class="font-bold text-primary"></span> telah tersimpan aman.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Hasil -->
-    <section id="hasil" class="py-16 bg-slate-50">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-[clamp(1.5rem,3vw,2.2rem)] font-bold text-primary mb-3">Hasil Pemilihan</h2>
-                <p class="text-slate-600">Data diambil langsung dari Google Sheets — <span id="lastUpdate">memuat...</span></p>
-            </div>
-            <div class="max-w-4xl mx-auto bg-white p-6 rounded-2xl shadow-md">
-                <div class="mb-8"><canvas id="voteChart" height="300"></canvas></div>
-                <div class="space-y-4 mt-6">
-                    <div class="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
-                        <span class="font-medium">01 — Ahmad & Siti</span>
-                        <span class="font-bold text-primary"><span id="vote1">0</span> suara (<span id="persen1">0</span>%)</span>
-                    </div>
-                    <div class="flex justify-between items-center p-3 bg-teal-50 rounded-lg">
-                        <span class="font-medium">02 — Budi & Dewi</span>
-                        <span class="font-bold text-secondary"><span id="vote2">0</span> suara (<span id="persen2">0</span>%)</span>
-                    </div>
-                    <div class="flex justify-between items-center p-3 bg-orange-50 rounded-lg">
-                        <span class="font-medium">03 — Candra & Eka</span>
-                        <span class="font-bold text-accent"><span id="vote3">0</span> suara (<span id="persen3">0</span>%)</span>
-                    </div>
-                    <div class="flex justify-between items-center p-3 bg-slate-100 rounded-lg font-bold">
-                        <span>Total Suara Masuk</span>
-                        <span id="totalVote">0</span>
-                    </div>
-                </div>
+                    <div id="pesanError" class="text-red-500 text-sm mb-4 hidden"></div>
+                    <button type="submit" class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-primary/90 transition">
+                        Masuk ke Pemilihan
+                    </button>
+                </form>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="gradient-bg text-white py-8 mt-8">
-        <div class="container mx-auto px-4 text-center">
-            <p class="font-semibold mb-2">Pemilihan OSIS — Tahun Ajaran 2025/2026</p>
-            <p class="text-sm opacity-80">© 2026 Sekolah Kita | Data tersimpan di Google Sheets</p>
-        </div>
+    <footer class="gradient-bg text-white py-4 text-center text-sm">
+        <p>© 2026 Sekolah Kita | Pemilihan OSIS Tahun Ajaran 2025/2026</p>
     </footer>
 
-    <!-- Modal Konfirmasi -->
-    <div id="confirmModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white p-8 rounded-2xl max-w-md w-full mx-4">
-            <h3 class="text-xl font-bold mb-4 text-center">Konfirmasi Pilihan</h3>
-            <p class="text-center mb-6">Yakin memilih <span id="candidateName" class="font-bold text-primary"></span>?</p>
-            <p class="text-center text-sm text-red-500 mb-6">⚠️ Suara dikirim ke server & tidak dapat diubah!</p>
-            <div class="flex gap-3">
-                <button id="btnBatal" class="flex-1 py-2 border border-slate-300 rounded-lg hover:bg-slate-100">Batal</button>
-                <button id="btnKonfirmasi" class="flex-1 py-2 bg-primary text-white rounded-lg hover:bg-primary/90">Kirim Suara</button>
-            </div>
-        </div>
-    </div>
-
     <script>
-        // ===== GANTI URL INI DENGAN URL APPSCRIPT-MU =====
-        const URL_APPSCRIPT = "https://script.google.com/macros/s/AKfycbx0IobxK-nfVRiqE4BYUJX3jjFSREFEM4lc4DyOf6AdkroiAeTzmS9BTD2PkbMxTqSClA/exec";
-        // =================================================
-
-        // ✅ ID PEMILIH TETAP SAMA DI HP YANG SAMA
-        const ID_PEMILIH_KEY = "idPemilihanOSIS_2025_TETAP";
-        let ID_PEMILIH = localStorage.getItem(ID_PEMILIH_KEY);
-        if (!ID_PEMILIH) {
-            ID_PEMILIH = "pemilih_" + Math.random().toString(36).substr(2, 12) + "_" + Date.now();
-            localStorage.setItem(ID_PEMILIH_KEY, ID_PEMILIH);
-        }
-
-        let sudahMemilih = false;
-        let pilihanTerpilih = "";
-
-        // Navbar
-        document.getElementById('menuToggle').onclick = () => {
-            document.getElementById('mobileMenu').classList.toggle('hidden');
+        // Data Siswa per Kelas
+        const dataSiswa = {
+            "Kelas X.1": ["AGUNG LASMANA", "ALVIN WIJAYA", "AHMAD MAULANA", "ANA NI'MATUL ULAA", "ARYA SAPUTRA", "BUNGA SAFITRI", "DEA RATNA", "DIMAS ADITIA", "EDWARD FABIANO", "FAHRANI SALSABILA KURNIAWAN", "FIFIH NAILAH", "FUJIYANTI ARAFAH", "HALIMAH REGINA PUTRI", "KEYSA AGITA PUTRI", "MOH SAKU", "MUCHAROPI", "M. REZA", "REFA", "RENALDI SETIAWAN", "SAEPUL", "SUPRIYOGI", "SYIFAA KHOIRUNNISA", "UMU AIMAN", "VIDIYAH AYUNI", "WIDIA NINGSIH"],
+            "Kelas X.2": ["ALENI", "AHMAD MAULUDDIN", "AKHMAD KAELANI", "ASYARA ADILLA KHANZA", "BENTAR AL HUSNA", "CHIKA RAMADHANI", "DZAKY ALMER JAMAIL", "ERIKA HAMID", "FAHAT DWI SAPUTRA", "FADHEA DWI VANNESA", "HAFIZAH NURUL AEINI", "HABIBUN NURULLAH", "KHOERUL AZAM", "KENANGA AFISTA", "MARIO FATAN DERMAWAN", "MUHAMAD DAVIN FERDIANSYAH", "MUHAMMAD ARIF AMIRUDDIN", "NUR AZIZAH", "NURHALIMAH", "PUTRI ANGGRAENI", "REZA", "RIFAT HIDAYAT", "SYAHPUTRA", "SELY RAHMADANI", "SAMIUN", "ZULFIKAR"],
+            "Kelas XI": ["ABDUL HAMID", "AGUNG PRAMANA", "ANDIKA RIZKI PUTRA", "APRIYAN", "ASIYA", "DWI ANDIN JUANITA", "EFAN APRIANSYAH", "GALANG DWI PRATAMA", "HENGKI", "ILHAM NOOR FAMI", "MEGA MUSTIKA", "MOH ADILATUN", "MOH FAZRI AMRULLAH", "MOH. ARIF MAULANA", "MOH. MAULANA", "MOH. RIZAL", "MOHAMAD REVALDI", "MOHAMMAD FARID HUSEN", "MOHAMMAD SHOPIULLAH", "MUFLIKHA DWI WAHYUNI", "MUHAMAD ARSYADATUL UMAM", "MUHAMAD FADIL FADILLAH", "MUHAMMAD NUR ZAFIN", "MUHAMMAD SANDIH", "NATASYA RAMADHANTI", "NOVA ALFIANA", "RAMADAN", "RISKY MAULANA", "SEKAR KEMUNING", "SELVI", "SHERLY KHASANAH", "SITI AFNI AULIYAH", "SOLEHA WIDIA WATI", "SULAIMAN", "SYIFATURRAHMAWATI"],
+            "Kelas XII.1": ["ADEL LITA", "ALHANA", "ALPIN MUBAROK", "ANDI IBRAHIM BAANGGA RAHAWARIN", "DIKI FIRMANSYAH", "FADLI FASHA SHAPUTRA", "GALIH VIJAR NUGRAHA", "IJJATUL HIMAH", "LIORY ATTALA PRIYANA", "MARSELA AURILIANI PUTRI", "MUHAMMAD IZARRUL AZHAR", "MUHAMMAD RIZQI ASHSHUBHI", "NAIF DERMAWAN", "NINA NATASYA", "NURUL AINI", "PUTRI NURITA", "SAEFUL MU'MIN AL MADANI", "SALMAH", "SITI FITRIYAH", "SUNADI", "TATIH AGUSTINA", "ZIDNI ILMAN"],
+            "Kelas XII.2": ["AHMAD RIYANI", "ALDIANSYAH", "ANGGA", "ARMAN", "AULIA RAHMAWATI", "DAMAR ADIYASA", "GIO RAHMADHAN", "IMAN MAULANA", "LUVI SAHRUL", "MELISA", "MOHAMMAD AFIF MAULANA", "MOHAMMAD YASIN ARAFAT", "NABILA AZZALIA PUTRI", "NATASHA SAFFA AZAHRA", "NILA LESTARI", "NUR AZIZAH", "SAFIRA DEWI", "SEMI AJI DILAGA", "SITI RAHMA YANI", "SITI SHOLEHA", "SRI HAYATI", "SUCI SEPTIANI", "SUTA", "TIARA PUTRI FEBRIYANTI"]
         };
 
-        // Chart
-        const ctx = document.getElementById('voteChart').getContext('2d');
-        const voteChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Pasangan 01', 'Pasangan 02', 'Pasangan 03'],
-                datasets: [{
-                    label: 'Perolehan Suara',
-                    data: [0, 0, 0],
-                    backgroundColor: ['#165DFF', '#36CBCB', '#FF7D00'],
-                    borderRadius: 8
-                }]
-            },
-            options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
-        });
-
-        // Ambil hasil dari Google Sheets & cek status pemilih
-        async function muatHasil() {
-            try {
-                const res = await fetch(`${URL_APPSCRIPT}?idPemilih=${encodeURIComponent(ID_PEMILIH)}`);
-                const data = await res.json();
-                const { p1, p2, p3, sudahPilih } = data;
-                const total = p1 + p2 + p3;
-
-                document.getElementById('vote1').textContent = p1;
-                document.getElementById('vote2').textContent = p2;
-                document.getElementById('vote3').textContent = p3;
-                document.getElementById('totalVote').textContent = total;
-                document.getElementById('persen1').textContent = total ? ((p1 / total) * 100).toFixed(1) : 0;
-                document.getElementById('persen2').textContent = total ? ((p2 / total) * 100).toFixed(1) : 0;
-                document.getElementById('persen3').textContent = total ? ((p3 / total) * 100).toFixed(1) : 0;
-                voteChart.data.datasets[0].data = [p1, p2, p3];
-                voteChart.update();
-                document.getElementById('lastUpdate').textContent = 'Terbaru: ' + new Date().toLocaleString('id-ID');
-
-                if (sudahPilih) tandaiSudahPilih();
-            } catch (e) {
-                console.error('Gagal memuat data:', e);
-            }
-        }
-
-        function tandaiSudahPilih() {
-            sudahMemilih = true;
-            document.getElementById('voteStatus').classList.add('hidden');
-            document.getElementById('voteSuccess').classList.remove('hidden');
-            document.querySelectorAll('.vote-btn').forEach(b => {
-                b.classList.add('opacity-50', 'cursor-not-allowed');
-                b.textContent = 'Sudah Memilih';
-                b.disabled = true;
-            });
-        }
-
-        // Pilih kandidat
-        document.querySelectorAll('.vote-btn').forEach(btn => {
-            btn.onclick = () => {
-                if (sudahMemilih) return alert('⚠️ Kamu sudah memilih dari perangkat ini! Tidak bisa memilih lagi.');
-                pilihanTerpilih = btn.dataset.candidate;
-                document.getElementById('candidateName').textContent = pilihanTerpilih;
-                document.getElementById('confirmModal').classList.remove('hidden');
-            };
-        });
-
-        // Batal
-        document.getElementById('btnBatal').onclick = () => {
-            document.getElementById('confirmModal').classList.add('hidden');
-            pilihanTerpilih = "";
-        };
-
-        // ✅ Kirim Suara → Kembali ke Halaman Pemilihan
-        document.getElementById('btnKonfirmasi').onclick = async () => {
-            document.getElementById('confirmModal').classList.add('hidden');
-            try {
-                await fetch(URL_APPSCRIPT, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        kandidat: pilihanTerpilih,
-                        idPemilih: ID_PEMILIH
-                    })
+        // Isi daftar nama siswa berdasarkan kelas yang dipilih
+        function loadNamaSiswa() {
+            const kelasSelect = document.getElementById("kelas");
+            const namaSelect = document.getElementById("nama");
+            const selectedKelas = kelasSelect.value;
+            namaSelect.innerHTML = '<option value="" disabled selected>-- Pilih Nama --</option>';
+            namaSelect.disabled = true;
+            if (selectedKelas && dataSiswa[selectedKelas]) {
+                dataSiswa[selectedKelas].forEach(nama => {
+                    const option = document.createElement("option");
+                    option.value = nama;
+                    option.textContent = nama;
+                    namaSelect.appendChild(option);
                 });
-
-                tandaiSudahPilih();
-                document.getElementById('chosenCandidate').textContent = pilihanTerpilih;
-                await muatHasil();
-
-                // ✅ Tampilkan pesan lalu kembali ke halaman pemilihan
-                alert('✅ Suara berhasil dikirim! Terima kasih telah berpartisipasi.');
-                
-                // Hapus penanda perangkat agar siswa berikutnya bisa memilih
-                localStorage.removeItem(ID_PEMILIH_KEY);
-                
-                // Kembali ke halaman pemilihan/login
-                window.location.href = "https://maimundu.github.io/pemilihan-osis-mai/pemilihan.html";
-
-            } catch (e) {
-                alert('❌ Gagal mengirim suara: ' + e.message);
+                namaSelect.disabled = false;
             }
-        };
+        }
 
-        window.onclick = e => {
-            if (e.target === document.getElementById('confirmModal'))
-                document.getElementById('confirmModal').classList.add('hidden');
-        };
+        // Saat form dikirim → simpan data & arahkan ke halaman pemilihan
+        document.getElementById("loginForm").addEventListener("submit", function(e) {
+            e.preventDefault();
 
-        // Muat data saat halaman dibuka & perbarui tiap 10 detik
-        muatHasil();
-        setInterval(muatHasil, 10000);
+            const kelas = document.getElementById("kelas").value;
+            const nama = document.getElementById("nama").value;
+            const pesan = document.getElementById("pesanError");
+
+            if (!kelas || !nama) {
+                pesan.textContent = "⚠️ Silakan pilih kelas dan nama terlebih dahulu!";
+                pesan.classList.remove("hidden", "text-green-600");
+                pesan.classList.add("text-red-500");
+                return;
+            }
+
+            // Simpan data siswa agar bisa dipakai di halaman tujuan
+            localStorage.setItem("namaSiswa", nama);
+            localStorage.setItem("kelasSiswa", kelas);
+
+            // ✅ Arahkan langsung ke halaman pemilihan.html
+            window.location.href = "https://maimundu.github.io/pemilihan-osis-mai/pemilihan.html";
+        });
     </script>
 </body>
 </html>
