@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Pemilihan OSIS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#36CBCB',
+                        accent: '#FF7D00',
+                        dark: '#1E293B',
+                        light: '#F8FAFC'
+                    },
+                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .card-shadow { box-shadow: 0 10px 30px rgba(22, 93, 255, 0.12); }
+            .gradient-bg { background: linear-gradient(135deg, #165DFF 0%, #36CBCB 100%); }
+        }
+    </style>
+</head>
+<body class="font-sans bg-slate-50 text-dark">
+
+    <!-- Navbar -->
+    <nav class="gradient-bg text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <i class="fa fa-bar-chart text-2xl"></i>
+                <h1 class="text-xl font-bold">Hasil Pemilihan OSIS</h1>
+            </div>
+            <div class="hidden md:flex gap-8 font-medium">
+                <a href="pemilihan.html" class="hover:text-yellow-300 transition">Kembali Memilih</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hasil Pemilihan -->
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-[clamp(1.5rem,3vw,2.2rem)] font-bold text-primary mb-3">Hasil Perolehan Suara</h2>
+                <p class="text-slate-600">Data diambil langsung dari Google Sheets — <span id="lastUpdate">memuat...</span></p>
+            </div>
+            <div class="max-w-4xl mx-auto bg-white p-6 rounded-2xl shadow-md">
+                <div class="mb-8"><canvas id="voteChart" height="320"></canvas></div>
+                <div class="space-y-4 mt-6">
+                    <div class="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
+                        <span class="font-medium">01 — Ahmad & Siti</span>
+                        <span class="font-bold text-primary"><span id="vote1">0</span> suara (<span id="persen1">0</span>%)</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-teal-50 rounded-lg">
+                        <span class="font-medium">02 — Budi & Dewi</span>
+                        <span class="font-bold text-secondary"><span id="vote2">0</span> suara (<span id="persen2">0</span>%)</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-orange-50 rounded-lg">
+                        <span class="font-medium">03 — Candra & Eka</span>
+                        <span class="font-bold text-accent"><span id="vote3">0</span> suara (<span id="persen3">0</span>%)</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-slate-100 rounded-lg font-bold text-lg mt-4">
+                        <span>Total Suara Masuk</span>
+                        <span id="totalVote">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="gradient-bg text-white py-6 mt-8">
+        <div class="container mx-auto px-4 text-center">
+            <p class="font-semibold">Pemilihan OSIS — Tahun Ajaran 2025/2026</p>
+            <p class="text-sm opacity-80 mt-1">Data diperbarui otomatis setiap 10 detik</p>
+        </div>
+    </footer>
+
+    <script>
+        const URL_APPSCRIPT = "https://script.google.com/macros/s/AKfycbx0IobxK-nfVRiqE4BYUJX3jjFSREFEM4lc4DyOf6AdkroiAeTzmS9BTD2PkbMxTqSClA/exec";
+
+        // Inisialisasi Chart
+        const ctx = document.getElementById('voteChart').getContext('2d');
+        const voteChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Pasangan 01', 'Pasangan 02', 'Pasangan 03'],
+                datasets: [{
+                    label: 'Perolehan Suara',
+                    data: [0, 0, 0],
+                    backgroundColor: ['#165DFF', '#36CBCB', '#FF7D00'],
+                    borderRadius: 12
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1E293B',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        padding: 12,
+                        cornerRadius: 8
+                    }
+                },
+                scales: {
+                    y: { beginAtZero: true, ticks: { precision: 0 } }
+                }
+            }
+        });
+
+        // Muat data dari Google Sheets
+        async function muatHasil() {
+            try {
+                const res = await fetch(URL_APPSCRIPT);
+                const data = await res.json();
+                const { p1, p2, p3 } = data;
+                const total = p1 + p2 + p3;
+
+                document.getElementById('vote1').textContent = p1;
+                document.getElementById('vote2').textContent = p2;
+                document.getElementById('vote3').textContent = p3;
+                document.getElementById('totalVote').textContent = total;
+
+                document.getElementById('persen1').textContent = total ? ((p1 / total) * 100).toFixed(1) : 0;
+                document.getElementById('persen2').textContent = total ? ((p2 / total) * 100).toFixed(1) : 0;
+                document.getElementById('persen3').textContent = total ? ((p3 / total) * 100).toFixed(1) : 0;
+
+                voteChart.data.datasets[0].data = [p1, p2, p3];
+                voteChart.update();
+
+                document.getElementById('lastUpdate').textContent = new Date().toLocaleString('id-ID');
+            } catch (e) {
+                console.error('Gagal memuat hasil:', e);
+            }
+        }
+
+        muatHasil();
+        setInterval(muatHasil, 10000);
+    </script>
+</body>
+</html>
